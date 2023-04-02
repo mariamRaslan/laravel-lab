@@ -8,9 +8,11 @@
             Post Info
         </div>
         <div class="card-body">
-            <h5 class="card-title">Title: {{$post['title']}}</h5>
-            <p class="card-text">Description: {{$post['description']}}</p>
-        </div>
+    <h5 class="card-title">Title:</h5>
+    <p class="card-text">{{$post->title}}:</p>
+    <h5 class="card-title">Description:</h5>
+    <p class="card-text">{{$post->description}}</p>
+    </div>
     </div>
 
     <div class="card mt-4">
@@ -18,9 +20,11 @@
             Post Creator Info
         </div>
         <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        </div>
+    <h5 class="card-title ">Name:-<small class="fw-normal">{{$user->name}}</small></h5>
+    <h5 class="card-title">Email:- <small class="fw-normal">{{$user->email}}</small></h5>
+    <h5 class="card-title">Created At:- <small class="fw-normal">{{$user->created_at}}</small></h5>
+
+    </div>
     </div>
 
 @endsection

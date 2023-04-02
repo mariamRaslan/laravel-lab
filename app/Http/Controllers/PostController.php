@@ -1,60 +1,77 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public $posts = [
-        ['id' => 1, 'title' => 'PHP', 'description' => 'Hello PHP', 'posted_by' => 'Mariam', 'created_at' => '2023-04-01 12:00:00'],
-        ['id' => 2, 'title' => 'MySQL', 'description' => 'Hello MySQL', 'posted_by' => 'Habiba', 'created_at' => '2023-04-01 12:00:00'],
-        ['id' => 3, 'title' => 'JS', 'description' => 'Hello JS', 'posted_by' => 'Nabila', 'created_at' => '2023-04-01 12:00:00'],
-    ];
     public function index()
-    {
-        return view('posts.index', ['posts' => $this->posts]);
+    { $posts = Post::paginate(3); //to retrieve all records
+
+        return view('posts.index', [
+            'posts' => $posts
+        ]);
     }
 
     public function show($id)
     {
-        $post = [];
-        foreach ($this->posts as $searchPost) {
-            if ($searchPost['id'] == $id) {
-                $post = $searchPost;
-            }
-        }
-        return view('posts.show', ['post' => $post]);
+        $post = Post::find($id);  //query in db select * from posts where id = $postId
+        $user_id=$post->user_id;
+        $user =User::find($user_id);
+
+        return view('posts.show',[ 'post' => $post,'user' =>$user]);
     }
 
     public function create()
     {
-        return view('posts.create');
+        $users = User::all();
+
+        return view('posts.create',[
+            'users' => $users
+        ]);
     }
 
-    public function store()
+    public function store(Request $request)
     {
+        $data = $request->all();
+
+
+        Post::create([
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'user_id' => $data['post_creator'],
+
+        ]);
         return redirect()->route('posts.index');
     }
 
     public function edit($id)
     {
-        $post = [];
-        foreach ($this->posts as $searchPost) {
-            if ($searchPost['id'] == $id) {
-                $post = $searchPost;
-            }
-        }
-        return view('posts.edit', ['post' => $post]);
+        $post=Post::all()->where('id',$id);
+        //query in db select * from posts where id = $postId
+        $users = User::all();
+        return view('posts.edit',[
+            'post' => $post,'users' => $users
+        ]);
     }
 
-    public function update()
+    public function update($id,Request $request)
     {
+        $data = $request->all();
+        Post::where('id',$id)
+        ->update([
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'user_id' => $data['post_creator'],
+            ]);
         return redirect()->route('posts.index');
     }
 
     public function destroy($id)
     {
+        $deleted = Post::where('id', $id)->delete();
         return redirect()->route('posts.index');
     }
 }

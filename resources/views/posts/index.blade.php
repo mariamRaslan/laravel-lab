@@ -21,21 +21,32 @@
             <tr>
                 <td>{{$post['id']}}</td>
                 <td>{{$post['title']}}</td>
-                <td>{{$post['posted_by']}}</td>
-                <td>{{$post['created_at']}}</td>
+                <td>{{ isset($post->user) ? $post->user->name : 'Not Found' }}</td>
+                <td>{{ $post->created_at->format("Y-m-d")}}</td>
                 <td>
                     <a href="{{route('posts.show',$post['id'])}}" class="btn btn-primary">View</a>
                     <a href="{{route('posts.edit',$post['id'])}}"  class="btn btn-success">Edit</a>
-                    <form action="{{ route('posts.destroy', $post['id']) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger"
-                                onclick="return confirm('{{ __('Are you sure you want to delete?') }}')">Delete</button>
-                        </form>
+                    <form method="POST" action="{{route('posts.destroy',$post->id)}}"  style="display:inline">
+                                        {{ csrf_field() }} {{ method_field('DELETE') }}
+                                        <button type="submit" id='delete' class="btn btn-danger">Delete</button>
+                                    </form>
                 </td>
             </tr>
         @endforeach
         </tbody>
     </table>
+    <div class="d-flex justify-content-center">
+    {!! $posts->links() !!}
+</div>
+
+<script>
+            const del=document.getElementById('delete');
+            del.addEventListener('click',function(e){
+                const c=confirm("You Sure Continue Deleted !");
+                if(c == false){
+                    e.preventDefault();
+                }
+            })
+        </script>
 
 @endsection
