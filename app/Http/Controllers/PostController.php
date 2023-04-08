@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -20,8 +21,12 @@ class PostController extends Controller
         $post = Post::find($id);  //query in db select * from posts where id = $postId
         $user_id=$post->user_id;
         $user =User::find($user_id);
-
-        return view('posts.show',[ 'post' => $post,'user' =>$user]);
+        $comments = Comment::where('commentable_id',$id)->get();
+        foreach ($comments as $comment) {
+            if ($comment['user_id'])
+                $comment['user_id'] = User::find($comment['user_id'])['name'];
+        }
+        return view('posts.show', ['post' => $post , 'user'=>$user , 'comments'=>$comments]);
     }
 
     public function create()

@@ -22,7 +22,7 @@
                 <td>{{$post['id']}}</td>
                 <td>{{$post['title']}}</td>
                 <td>{{ isset($post->user) ? $post->user->name : 'Not Found' }}</td>
-                <td>{{ $post->created_at->format("Y-m-d")}}</td>
+                <td>{{ \Carbon\Carbon::parse($post->created_at)->isoFormat('MM dddd YYYY')}}</td>
                 <td>
                     <a href="{{route('posts.show',$post['id'])}}" class="btn btn-primary">View</a>
                     <a href="{{route('posts.edit',$post['id'])}}"  class="btn btn-success">Edit</a>

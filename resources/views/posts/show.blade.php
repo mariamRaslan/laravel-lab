@@ -22,9 +22,10 @@
         <div class="card-body">
     <h5 class="card-title ">Name:-<small class="fw-normal">{{$user->name}}</small></h5>
     <h5 class="card-title">Email:- <small class="fw-normal">{{$user->email}}</small></h5>
-    <h5 class="card-title">Created At:- <small class="fw-normal">{{$user->created_at}}</small></h5>
+    <h5 class="card-title">Created At:- <small class="fw-normal">{{ \Carbon\Carbon::parse($post->created_at)->isoFormat('MM dddd YYYY')}}</small></h5>
 
     </div>
     </div>
-
+    @include('comments.index')
+    @include('comments.create')
 @endsection
