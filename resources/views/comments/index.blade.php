@@ -1,3 +1,4 @@
+<div class="container  ms-5">
 <table class="table mt-4">
     <thead>
         <tr>
@@ -17,7 +18,7 @@
                     <td>{{ \Carbon\Carbon::parse($comment->created_at)->format('D-M-Y') }}</td>
                     <td>
                         {{-- <a href="/comments/{{$comment['id']}}" class="btn btn-info">View</a> --}}
-                        <a href="/comments/{{ $comment['id'] }}/edit" class="btn btn-warning">Edit</a>
+                        <a href="/comments/{{ $comment['id'] }}/edit" class="btn btn-success">Edit</a>
                         <form action="{{ route('comments.destroy', $comment['id']) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
@@ -30,4 +31,5 @@
     </tbody>
 </table>
 <div class="d-flex justify-content-center align-items-bottom fixed-bottom">
+</div>
 </div>

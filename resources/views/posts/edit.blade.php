@@ -20,7 +20,8 @@
         </ul>
     </div>
 @endif
-    <form action="{{route('posts.update',$id)}}" method="POST">
+<div class="container  ms-5">
+    <form action="{{route('posts.update',$id)}}" method="POST" >
     @csrf
         @method('PUT')
         <div class="mb-3">
@@ -43,4 +44,5 @@
 
         <button  class="btn btn-success">Update Post</button>
     </form>
+    </div>
 @endsection

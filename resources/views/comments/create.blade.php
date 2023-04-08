@@ -1,3 +1,4 @@
+<div class="container  ms-5">
 <form action="{{ route('comments.store') }}" method="POST">
     @csrf
     <input type="text" name="post_id" value="{{ $post->id }}" hidden class="form-control">
@@ -11,3 +12,4 @@
     </div>
     <button class="btn btn-success">Add Comment</button>
 </form>
+</div>

@@ -3,7 +3,8 @@
 @section('title') Show @endsection
 
 @section('content')
-    <div class="card mt-4">
+<div class="container  ms-5">
+    <div class="card mt-4 ">
         <div class="card-header">
             Post Info
         </div>
@@ -26,6 +27,7 @@
 
     </div>
     </div>
+</div>
     @include('comments.index')
     @include('comments.create')
 @endsection

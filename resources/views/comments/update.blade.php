@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+<div class="container  ms-5">
     <form action="{{ route('comments.update', $comment['id']) }}" method="POST">
         @csrf
         @method('PUT')
@@ -17,4 +18,5 @@
         </div>
         <button class="btn btn-success">Update Comment</button>
     </form>
+</div>
 @endsection

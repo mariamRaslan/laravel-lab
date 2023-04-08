@@ -13,6 +13,7 @@
         </ul>
     </div>
 @endif
+<div class="container  ms-5">
     <form action="{{route('posts.store')}}" method="post">
     @csrf
         <div class="mb-3">
@@ -35,4 +36,5 @@
 
         <button class="btn btn-success">Create Post</button>
     </form>
+</div>
 @endsection
