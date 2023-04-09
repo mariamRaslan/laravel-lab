@@ -13,6 +13,9 @@
     <p class="card-text">{{$post->title}}:</p>
     <h5 class="card-title">Description:</h5>
     <p class="card-text">{{$post->description}}</p>
+    <div>
+    @if($post['photo'])<img  src="/photos/posts/{{$post['photo']}}" width="200" height="200">@endif
+    </div>
     </div>
     </div>
 

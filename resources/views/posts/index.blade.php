@@ -12,6 +12,7 @@
             <th scope="col">#</th>
             <th scope="col">Title</th>
             <th scope="col">post slug</th>
+            <th scope="col">image</th>
             <th scope="col">Posted By</th>
             <th scope="col">Created At</th>
             <th scope="col">Actions</th>
@@ -23,6 +24,7 @@
                 <td>{{$post['id']}}</td>
                 <td>{{$post['title']}}</td>
                 <td>{{$post['slug']}}</td>
+                <td>{{$post['photo']}}</td>
                 <td>{{ isset($post->user) ? $post->user->name : 'Not Found' }}</td>
                 <td>{{ \Carbon\Carbon::parse($post->created_at)->isoFormat('MM dddd YYYY')}}</td>
                 <td>

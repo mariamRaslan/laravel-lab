@@ -14,7 +14,7 @@
     </div>
 @endif
 <div class="container  ms-5">
-    <form action="{{route('posts.store')}}" method="post">
+    <form action="{{route('posts.store')}}" method="post" enctype="multipart/form-data">
     @csrf
         <div class="mb-3">
             <label class="form-label">Title</label>
@@ -33,6 +33,14 @@
                     @endforeach
             </select>
         </div>
+
+        <div class="mb-3">
+                <label for="photo" class="form-label">Upload image</label>
+
+                <div class="col-md-6">
+                    <input id="photo" type="file" class="form-control" name="photo">
+                </div>
+            </div>
 
         <button class="btn btn-success">Create Post</button>
     </form>

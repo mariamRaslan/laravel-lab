@@ -6,6 +6,10 @@ use App\Models\User;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePostRequest;
+use App\Jobs\PruneOldPostsJob;
+use Illuminate\Support\Facades\Queue;
+
+Queue::push(new PruneOldPostsJob);
 
 class PostController extends Controller
 {
@@ -42,14 +46,29 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $data = $request->all();
+      //  dd($data);
+        if($request->file('photo')){
+            $file_extension=$request->photo->getClientOriginalExtension();
+            $file_name=time().'.'.$file_extension;
+            $path ='photos/posts';
+            $request->file('photo')->move( $path,$file_name);
+            Post::create([
+                'title' => $data['title'],
+                'description' => $data['description'],
+                'user_id' => $data['post_creator'],
+                'photo'=>$file_name
 
+            ]);
+        }
+        else{
+            Post::create([
+                'title' => $data['title'],
+                'description' => $data['description'],
+                'user_id' => $data['post_creator'],
 
-        Post::create([
-            'title' => $data['title'],
-            'description' => $data['description'],
-            'user_id' => $data['post_creator'],
+            ]);
+        }
 
-        ]);
         return redirect()->route('posts.index');
     }
 
@@ -65,19 +84,35 @@ class PostController extends Controller
 
     public function update($id,StorePostRequest $request)
     {
-        $data = $request->all();
-        Post::where('id',$id)
-        ->update([
-            'title' => $data['title'],
-            'description' => $data['description'],
-            'user_id' => $data['post_creator'],
-            ]);
-        return redirect()->route('posts.index');
+        $post = Post::find($id);
+      //  dd($post->photo);
+        if ($post) {
+            $post->update($request->except('photo'));
+            if ($request->hasFile('photo')) {
+                $old_photo = $post->photo;
+                $photo = $request->photo;
+                $photo_new_name = time() .'.'. $photo->getClientOriginalExtension();
+                if ($photo->move('photos/posts', $photo_new_name)) {
+                    unlink('photos/posts/'.$old_photo);
+                }
+                $post->photo = $photo_new_name;
+            }
+        }
+
+        $post->save();
+
+        return to_route('posts.index');
     }
 
     public function destroy($id)
     {
-        $deleted = Post::where('id', $id)->delete();
+        $postPhoto = Post::find($id)->photo;
+      //  dd($postPhoto);
+        if ($postPhoto) {
+            $file_path = "photos/posts/".$postPhoto;
+            unlink($file_path);
+        }
+        Post::destroy($id);
         return redirect()->route('posts.index');
     }
 }
